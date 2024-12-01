@@ -1158,24 +1158,132 @@
   "timestamp" : 474
 }, {
   "command" : "report",
-  "timestamp" : 475,
-  "error" : "Invalid command: report"
+  "output" : {
+    "IBAN" : "RO58POOB7344468893732422",
+    "balance" : 89964.19681818182,
+    "currency" : "CHF",
+    "transactions" : [ ]
+  },
+  "timestamp" : 475
 }, {
   "command" : "report",
-  "timestamp" : 476,
-  "error" : "Invalid command: report"
+  "output" : {
+    "IBAN" : "RO69POOB6209498372540635",
+    "balance" : 5952.351818181818,
+    "currency" : "CHF",
+    "transactions" : [ {
+      "timestamp" : 251,
+      "description" : "Electricity and water bills",
+      "amount" : "1726.0 CHF",
+      "senderIBAN" : "RO58POOB7344468893732422",
+      "receiverIBAN" : "RO69POOB6209498372540635",
+      "transferType" : "received"
+    }, {
+      "timestamp" : 254,
+      "description" : "Weekly shopping from Coop",
+      "amount" : "717.0 CHF",
+      "senderIBAN" : "RO58POOB7344468893732422",
+      "receiverIBAN" : "RO69POOB6209498372540635",
+      "transferType" : "received"
+    }, {
+      "timestamp" : 256,
+      "description" : "Medical checkup at a private clinic",
+      "amount" : "474.0 CHF",
+      "senderIBAN" : "RO69POOB6209498372540635",
+      "receiverIBAN" : "RO19POOB4981055641668812",
+      "transferType" : "sent"
+    }, {
+      "timestamp" : 257,
+      "description" : "Tickets for a Swiss football match",
+      "amount" : "155.0 CHF",
+      "senderIBAN" : "RO69POOB6209498372540635",
+      "receiverIBAN" : "RO98POOB7190609943699593",
+      "transferType" : "sent"
+    }, {
+      "timestamp" : 258,
+      "description" : "Repayment for a mortgage",
+      "amount" : "572.0 CHF",
+      "senderIBAN" : "RO69POOB6209498372540635",
+      "receiverIBAN" : "RO45POOB6505529013808948",
+      "transferType" : "sent"
+    }, {
+      "timestamp" : 259,
+      "description" : "Tickets for a Swiss football match",
+      "amount" : "748.0 CHF",
+      "senderIBAN" : "RO69POOB6209498372540635",
+      "receiverIBAN" : "RO19POOB5993192794373940",
+      "transferType" : "sent"
+    }, {
+      "timestamp" : 260,
+      "description" : "Renewal of a Swisscom subscription",
+      "amount" : "90.0 CHF",
+      "senderIBAN" : "RO69POOB6209498372540635",
+      "receiverIBAN" : "RO98POOB8412955460158769",
+      "transferType" : "sent"
+    } ]
+  },
+  "timestamp" : 476
 }, {
   "command" : "report",
-  "timestamp" : 477,
-  "error" : "Invalid command: report"
+  "output" : {
+    "IBAN" : "RO90POOB5450777208072365",
+    "balance" : 47.77681818181827,
+    "currency" : "CHF",
+    "transactions" : [ {
+      "timestamp" : 261,
+      "description" : "Booking a holiday in the Swiss Alps",
+      "amount" : "909.0 CHF",
+      "senderIBAN" : "RO90POOB5450777208072365",
+      "receiverIBAN" : "RO01POOB3925326637526572",
+      "transferType" : "sent"
+    }, {
+      "timestamp" : 262,
+      "description" : "Insufficient funds"
+    }, {
+      "timestamp" : 263,
+      "description" : "Insufficient funds"
+    }, {
+      "timestamp" : 264,
+      "description" : "Buying clothes at Manor",
+      "amount" : "407.0 CHF",
+      "senderIBAN" : "RO90POOB5450777208072365",
+      "receiverIBAN" : "RO79POOB3616857825600958",
+      "transferType" : "sent"
+    }, {
+      "timestamp" : 265,
+      "description" : "Insufficient funds"
+    }, {
+      "timestamp" : 370,
+      "description" : "Split payment of 68481.00 EUR",
+      "amount" : 1369.62,
+      "currency" : "EUR"
+    }, {
+      "timestamp" : 375,
+      "description" : "New card created",
+      "card" : "7901879264253296",
+      "cardHolder" : "Victoria_Rice@icloud.ch",
+      "account" : "RO90POOB5450777208072365"
+    } ]
+  },
+  "timestamp" : 477
 }, {
   "command" : "report",
-  "timestamp" : 478,
-  "error" : "Invalid command: report"
+  "output" : {
+    "IBAN" : "RO65POOB8944016386845896",
+    "balance" : 140304.228,
+    "currency" : "AUD",
+    "transactions" : [ ]
+  },
+  "timestamp" : 478
 }, {
   "command" : "report",
-  "timestamp" : 479,
-  "error" : "Invalid command: report"
+  "output" : {
+    "IBAN" : "RO58POOB2721178218599590",
+    "balance" : 35442.00866666666,
+    "currency" : "USD",
+    "transactions" : [ ]
+  },
+  "timestamp" : 479
 }, {
   "command" : "checkCardStatus",
   "timestamp" : 480,

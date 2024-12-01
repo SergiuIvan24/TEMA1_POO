@@ -109,12 +109,17 @@
   "timestamp" : 6
 }, {
   "command" : "report",
-  "timestamp" : 26,
-  "error" : "Invalid command: report"
+  "output" : {
+    "IBAN" : "RO58POOB7344468893732422",
+    "balance" : 51504.25,
+    "currency" : "INR",
+    "transactions" : [ ]
+  },
+  "timestamp" : 26
 }, {
   "command" : "report",
   "timestamp" : 27,
-  "error" : "Invalid command: report"
+  "error" : "User not found for account IBAN: RO69POOB1255837963852827"
 }, {
   "command" : "printUsers",
   "output" : [ {
@@ -1520,12 +1525,36 @@
   "timestamp" : 156
 }, {
   "command" : "report",
-  "timestamp" : 166,
-  "error" : "Invalid command: report"
+  "output" : {
+    "IBAN" : "RO69POOB6209498372540635",
+    "balance" : 16301.759999999998,
+    "currency" : "NZD",
+    "transactions" : [ {
+      "timestamp" : 52,
+      "description" : "EMI payment for a home loan",
+      "amount" : "49.89714285714286 NZD",
+      "senderIBAN" : "RO58POOB7344468893732422",
+      "receiverIBAN" : "RO69POOB6209498372540635",
+      "transferType" : "received"
+    } ]
+  },
+  "timestamp" : 166
 }, {
   "command" : "report",
-  "timestamp" : 167,
-  "error" : "Invalid command: report"
+  "output" : {
+    "IBAN" : "RO65POOB8944016386845896",
+    "balance" : 14669.339999999998,
+    "currency" : "EUR",
+    "transactions" : [ {
+      "timestamp" : 105,
+      "description" : "Purchasing clothing at FabIndia",
+      "amount" : "21.70285714285714 EUR",
+      "senderIBAN" : "RO58POOB7344468893732422",
+      "receiverIBAN" : "RO65POOB8944016386845896",
+      "transferType" : "received"
+    } ]
+  },
+  "timestamp" : 167
 }, {
   "command" : "spendingsReport",
   "timestamp" : 170,

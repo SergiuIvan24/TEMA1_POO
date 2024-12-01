@@ -679,8 +679,19 @@
   "timestamp" : 119
 }, {
   "command" : "report",
-  "timestamp" : 124,
-  "error" : "Invalid command: report"
+  "output" : {
+    "IBAN" : "RO90POOB5450777208072365",
+    "balance" : 1996.111111111111,
+    "currency" : "NZD",
+    "transactions" : [ {
+      "timestamp" : 113,
+      "description" : "New card created",
+      "card" : "5088727507344799",
+      "cardHolder" : "Leanne_Scott-Davies@yandex.nz",
+      "account" : "RO90POOB5450777208072365"
+    } ]
+  },
+  "timestamp" : 124
 }, {
   "command" : "payOnline",
   "timestamp" : 151,
