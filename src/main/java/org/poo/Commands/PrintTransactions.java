@@ -42,6 +42,9 @@ public class PrintTransactions implements Command {
                 if (transaction.getReceiverIBAN() != null) {
                     transactionNode.put("receiverIBAN", transaction.getReceiverIBAN());
                 }
+                if (transaction.getCurrency() != null) {
+                    transactionNode.put("currency", transaction.getCurrency());
+                }
                 if (transaction.getAmount() != -1) {
                     transactionNode.put("amount", transaction.getAmount());
                 }
@@ -63,6 +66,14 @@ public class PrintTransactions implements Command {
                 if (transaction.getAccount() != null) {
                     transactionNode.put("account", transaction.getAccount());
                 }
+                if (transaction.getInvolvedAccounts() != null && !transaction.getInvolvedAccounts().isEmpty()) {
+                    ArrayNode involvedAccountsNode = objectMapper.createArrayNode();
+                    for (String iban : transaction.getInvolvedAccounts()) {
+                        involvedAccountsNode.add(iban);
+                    }
+                    transactionNode.set("involvedAccounts", involvedAccountsNode);
+                }
+
                 transactionsArray.add(transactionNode);
             }
         }

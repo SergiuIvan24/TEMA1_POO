@@ -649,18 +649,6 @@
   "timestamp" : 114,
   "error" : "User not found for email: Nicoleta_Diaconescu@mail.com.ro"
 }, {
-  "command" : "splitPayment",
-  "timestamp" : 116,
-  "error" : "Invalid command: splitPayment"
-}, {
-  "command" : "splitPayment",
-  "timestamp" : 117,
-  "error" : "Invalid command: splitPayment"
-}, {
-  "command" : "splitPayment",
-  "timestamp" : 118,
-  "error" : "Invalid command: splitPayment"
-}, {
   "command" : "printTransactions",
   "output" : [ {
     "timestamp" : 5,
@@ -689,10 +677,6 @@
     "account" : "RO90POOB5450777208072365"
   } ],
   "timestamp" : 119
-}, {
-  "command" : "splitPayment",
-  "timestamp" : 123,
-  "error" : "Invalid command: splitPayment"
 }, {
   "command" : "report",
   "timestamp" : 124,
@@ -820,6 +804,12 @@
     "amount" : 190.0,
     "commerciant" : "Starbucks"
   }, {
+    "timestamp" : 123,
+    "description" : "Split payment of 1393.00 EUR",
+    "currency" : "EUR",
+    "amount" : 348.25,
+    "involvedAccounts" : [ "RO30POOB9523423715747796", "RO19POOB4981055641668812", "RO65POOB8944016386845896", "RO68POOB1848616931405475" ]
+  }, {
     "timestamp" : 146,
     "description" : "Card payment",
     "amount" : 1608.75,
@@ -876,6 +866,12 @@
   }, {
     "timestamp" : 37,
     "description" : "Insufficient funds"
+  }, {
+    "timestamp" : 123,
+    "description" : "Split payment of 1393.00 EUR",
+    "currency" : "EUR",
+    "amount" : 348.25,
+    "involvedAccounts" : [ "RO30POOB9523423715747796", "RO19POOB4981055641668812", "RO65POOB8944016386845896", "RO68POOB1848616931405475" ]
   } ],
   "timestamp" : 173
 }, {
@@ -902,7 +898,7 @@
       } ]
     }, {
       "IBAN" : "RO30POOB9523423715747796",
-      "balance" : 2639.0,
+      "balance" : 2290.75,
       "currency" : "EUR",
       "type" : "classic",
       "cards" : [ ]
@@ -936,7 +932,7 @@
       "cards" : [ ]
     }, {
       "IBAN" : "RO65POOB8944016386845896",
-      "balance" : 5869.875,
+      "balance" : 5800.225,
       "currency" : "RON",
       "type" : "classic",
       "cards" : [ {
@@ -992,7 +988,7 @@
     "email" : "Sandra_Arnold@icloud.us",
     "accounts" : [ {
       "IBAN" : "RO19POOB4981055641668812",
-      "balance" : 10897.515151515152,
+      "balance" : 10584.090151515153,
       "currency" : "USD",
       "type" : "savings",
       "cards" : [ {
@@ -1083,7 +1079,7 @@
     "email" : "Tyler_Moore@yandex.ca",
     "accounts" : [ {
       "IBAN" : "RO68POOB1848616931405475",
-      "balance" : 6581.0,
+      "balance" : 6339.903846153846,
       "currency" : "CAD",
       "type" : "classic",
       "cards" : [ {

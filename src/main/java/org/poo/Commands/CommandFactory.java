@@ -3,11 +3,22 @@ package org.poo.Commands;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.poo.entities.UserRepo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CommandFactory {
     private final UserRepo userRepo;
 
     public CommandFactory(UserRepo userRepo) {
         this.userRepo = userRepo;
+    }
+
+    private List<String> getAccountsList(JsonNode accountsNode) {
+        List<String> accounts = new ArrayList<>();
+        for (JsonNode accountNode : accountsNode) {
+            accounts.add(accountNode.asText());
+        }
+        return accounts;
     }
 
     public Command createCommand(String commandType, JsonNode commandData) {
@@ -116,6 +127,15 @@ public class CommandFactory {
                         commandData.get("timestamp").asInt(),
                         userRepo
                 );
+            case "splitPayment":
+                return new SplitPayment(
+                        getAccountsList(commandData.get("accounts")),
+                        commandData.get("amount").asDouble(),
+                        commandData.get("currency").asText(),
+                        commandData.get("timestamp").asInt(),
+                        userRepo
+                );
+
             default:
                 throw new IllegalArgumentException("Invalid command: " + commandType);
         }

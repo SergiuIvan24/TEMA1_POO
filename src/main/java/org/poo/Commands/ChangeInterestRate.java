@@ -32,7 +32,7 @@ public class ChangeInterestRate implements Command {
         }
 
         try {
-            account.setInterestRate(interestRate); // Polymorphic call
+            account.setInterestRate(interestRate);
         } catch (UnsupportedOperationException e) {
         }
     }

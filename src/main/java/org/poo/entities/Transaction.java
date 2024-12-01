@@ -1,35 +1,38 @@
 package org.poo.entities;
 
+import java.util.List;
+
 public class Transaction {
     private final int timestamp;
     private final String description;
     private final String senderIBAN;
     private final String receiverIBAN;
     private final double amount;
+    private final String currency;
     private final String transferType;
     private final String card;
     private final String cardHolder;
     private final String account;
     private final String commerciant;
     private final String amountPlusCurrency;
+    private final List<String> involvedAccounts;
 
-    // Constructor privat, utilizat de Builder
-    public Transaction(Builder builder) {
+    private Transaction(Builder builder) {
         this.timestamp = builder.timestamp;
         this.description = builder.description;
         this.senderIBAN = builder.senderIBAN;
         this.receiverIBAN = builder.receiverIBAN;
         this.amount = builder.amount;
+        this.currency = builder.currency;
         this.transferType = builder.transferType;
         this.card = builder.card;
         this.cardHolder = builder.cardHolder;
         this.account = builder.account;
         this.commerciant = builder.commerciant;
         this.amountPlusCurrency = builder.amountPlusCurrency;
+        this.involvedAccounts = builder.involvedAccounts;
     }
 
-
-    // Getteri
     public int getTimestamp() {
         return timestamp;
     }
@@ -48,6 +51,10 @@ public class Transaction {
 
     public double getAmount() {
         return amount;
+    }
+
+    public String getCurrency() {
+        return currency;
     }
 
     public String getTransferType() {
@@ -74,18 +81,24 @@ public class Transaction {
         return amountPlusCurrency;
     }
 
+    public List<String> getInvolvedAccounts() {
+        return involvedAccounts;
+    }
+
     public static class Builder {
         private int timestamp;
         private String description;
         private String senderIBAN;
         private String receiverIBAN;
-        private double amount = -1; // Valoare implicită
+        private double amount = -1;
+        private String currency;
         private String transferType;
         private String card;
         private String cardHolder;
         private String account;
         private String commerciant;
-        private String amountPlusCurrency;
+        private String amountPlusCurrency; // Câmpul pe care îl folosești
+        private List<String> involvedAccounts;
 
         public Builder setTimestamp(int timestamp) {
             this.timestamp = timestamp;
@@ -109,6 +122,11 @@ public class Transaction {
 
         public Builder setAmount(double amount) {
             this.amount = amount;
+            return this;
+        }
+
+        public Builder setCurrency(String currency) {
+            this.currency = currency;
             return this;
         }
 
@@ -142,9 +160,13 @@ public class Transaction {
             return this;
         }
 
+        public Builder setInvolvedAccounts(List<String> involvedAccounts) {
+            this.involvedAccounts = involvedAccounts;
+            return this;
+        }
+
         public Transaction build() {
             return new Transaction(this);
         }
     }
 }
-
