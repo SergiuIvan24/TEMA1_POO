@@ -1,6 +1,8 @@
 package org.poo.Commands;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.poo.entities.Account;
 import org.poo.entities.Transaction;
 import org.poo.entities.User;
@@ -28,12 +30,13 @@ public class SplitPayment implements Command {
     public void execute(ArrayNode output) {
         double amountPerAccount = amount / accountsIban.size();
         List<Account> participatingAccounts = new ArrayList<>();
+        String errorIban = null;
         boolean hasInsufficientFunds = false;
-        List<String> involvedAccounts = new ArrayList<>(accountsIban);
 
         for (String iban : accountsIban) {
             Account account = findAccountByIban(iban);
             if (account == null) {
+                errorIban = iban;
                 hasInsufficientFunds = true;
                 break;
             }
@@ -42,19 +45,38 @@ public class SplitPayment implements Command {
                 try {
                     amountInAccountCurrency = convertCurrency(amountPerAccount, currency, account.getCurrency());
                 } catch (IllegalArgumentException e) {
+                    errorIban = iban;
                     hasInsufficientFunds = true;
                     break;
                 }
             }
             if (account.getBalance() < amountInAccountCurrency) {
+                errorIban = iban;
                 hasInsufficientFunds = true;
                 break;
             }
             participatingAccounts.add(account);
         }
 
+        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectNode result = objectMapper.createObjectNode();
+
         if (hasInsufficientFunds) {
-            return;
+            for (String iban : accountsIban) {
+                Account account = findAccountByIban(iban);
+                if (account != null) {
+                    Transaction errorTransaction = new Transaction.Builder()
+                            .setTimestamp(timestamp)
+                            .setDescription(String.format("Split payment of %.2f %s", amount, currency))
+                            .setCurrency(currency)
+                            .setAmount(amountPerAccount)
+                            .setInvolvedAccounts(accountsIban)
+                            .setError(String.format("Account %s has insufficient funds for a split payment.", errorIban))
+                            .build();
+                    account.addTransaction(errorTransaction);
+                }
+            }
+
         }
 
         for (Account account : participatingAccounts) {
@@ -69,12 +91,16 @@ public class SplitPayment implements Command {
                     .setDescription(String.format("Split payment of %.2f %s", amount, currency))
                     .setCurrency(currency)
                     .setAmount(amountPerAccount)
-                    .setTransferType(null)
-                    .setInvolvedAccounts(involvedAccounts)
+                    .setInvolvedAccounts(accountsIban)
                     .build();
             account.addTransaction(successfulTransaction);
         }
+
     }
+
+
+
+
 
     /**
      * Metodă pentru a găsi un cont pe baza IBAN-ului.
@@ -97,7 +123,42 @@ public class SplitPayment implements Command {
         if (fromCurrency.equals(toCurrency)) {
             return amount;
         }
-        double rate = userRepo.getExchangeRate(fromCurrency, toCurrency);
-        return amount / rate; // Divide instead of multiply
+
+        // Try to find a direct exchange rate from 'toCurrency' to 'fromCurrency'
+        Double rate = userRepo.getExchangeRate(fromCurrency, toCurrency);
+        if (rate != null) {
+            return amount / rate; // Divide instead of multiply
+        }
+
+        // Try to find inverse rate
+        Double inverseRate = userRepo.getExchangeRate(toCurrency, fromCurrency);
+        if (inverseRate != null) {
+            return amount * inverseRate; // Multiply
+        }
+
+        // If all else fails, throw an exception
+        throw new IllegalArgumentException("Exchange rate from " + fromCurrency + " to " + toCurrency + " not found.");
     }
+
+    private Double getRate(String baseCurrency, String targetCurrency) {
+        if (baseCurrency.equals(targetCurrency)) {
+            return 1.0;
+        }
+
+        // Try direct rate
+        Double rate = userRepo.getExchangeRate(baseCurrency, targetCurrency);
+        if (rate != null) {
+            return rate;
+        }
+
+        // Try inverse rate
+        Double inverseRate = userRepo.getExchangeRate(targetCurrency, baseCurrency);
+        if (inverseRate != null) {
+            return 1 / inverseRate;
+        }
+
+        return null;
+    }
+
+
 }

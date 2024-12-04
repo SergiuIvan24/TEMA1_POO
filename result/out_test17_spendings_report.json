@@ -91,20 +91,4 @@
     "timestamp" : 24,
     "description" : "Card not found"
   }
-}, {
-  "command" : "spendingsReport",
-  "timestamp" : 25,
-  "error" : "Invalid command: spendingsReport"
-}, {
-  "command" : "spendingsReport",
-  "timestamp" : 26,
-  "error" : "Invalid command: spendingsReport"
-}, {
-  "command" : "spendingsReport",
-  "timestamp" : 27,
-  "error" : "Invalid command: spendingsReport"
-}, {
-  "command" : "spendingsReport",
-  "timestamp" : 28,
-  "error" : "Invalid command: spendingsReport"
 } ]

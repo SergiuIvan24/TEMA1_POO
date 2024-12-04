@@ -39,6 +39,21 @@ public class SendMoney implements Command {
             return;
         }
 
+        String actualReceiverIBAN = userRepo.getIBANByAlias(receiverIBAN);
+        if (actualReceiverIBAN == null) {
+            actualReceiverIBAN = receiverIBAN;
+        }
+
+        User receiver = userRepo.getUserByIBAN(actualReceiverIBAN);
+        if (receiver == null) {
+            return;
+        }
+
+        Account receiverAccount = receiver.getAccount(actualReceiverIBAN);
+        if (receiverAccount == null) {
+            return;
+        }
+
         if (senderAccount.getBalance() < amount) {
             Transaction insufficientFundsTransaction = new Transaction.Builder()
                     .setTimestamp(timestamp)
@@ -48,26 +63,21 @@ public class SendMoney implements Command {
             return;
         }
 
-        User receiver = userRepo.getUserByIBAN(receiverIBAN);
-        if (receiver == null) {
-            return;
-        }
 
-        Account receiverAccount = receiver.getAccount(receiverIBAN);
-        if (receiverAccount == null) {
-            return;
-        }
-
-        double convertedAmount = amount;
-        String senderAmountWithCurrency = amount + " " + senderAccount.getCurrency();
-        String receiverAmountWithCurrency;
-
-        if (!senderAccount.getCurrency().equals(receiverAccount.getCurrency())) {
+        double convertedAmount;
+        try {
             convertedAmount = userRepo.getExchangeRate(senderAccount.getCurrency(), receiverAccount.getCurrency()) * amount;
-            receiverAmountWithCurrency = convertedAmount + " " + receiverAccount.getCurrency();
-        } else {
-            receiverAmountWithCurrency = amount + " " + receiverAccount.getCurrency();
+        } catch (IllegalArgumentException e) {
+            ObjectMapper mapper = new ObjectMapper();
+            ObjectNode errorNode = mapper.createObjectNode();
+            errorNode.put("error", e.getMessage());
+            errorNode.put("timestamp", timestamp);
+            output.add(errorNode);
+            return;
         }
+
+        String senderAmountWithCurrency = String.valueOf(amount) + " " + senderAccount.getCurrency();
+        String receiverAmountWithCurrency = String.valueOf(convertedAmount) + " " + receiverAccount.getCurrency();
 
         senderAccount.setBalance(senderAccount.getBalance() - amount);
         receiverAccount.setBalance(receiverAccount.getBalance() + convertedAmount);
@@ -92,6 +102,4 @@ public class SendMoney implements Command {
                 .build();
         receiverAccount.addTransaction(receiverTransaction);
     }
-
 }
-

@@ -25,19 +25,22 @@ public class Report implements Command {
 
     @Override
     public void execute(ArrayNode output) {
-        User user = userRepo.getUserByIBAN(accountIBAN);
-        if (user == null) {
-            throw new IllegalArgumentException("User not found for account IBAN: " + accountIBAN);
-        }
-
-        Account account = user.getAccount(accountIBAN);
-        if (account == null) {
-            throw new IllegalArgumentException("Account not found for IBAN: " + accountIBAN);
-        }
+        Account account = userRepo.getAccountByIBAN(accountIBAN);
 
         ObjectMapper objectMapper = new ObjectMapper();
-        ObjectNode reportNode = objectMapper.createObjectNode();
-        reportNode.put("command", "report");
+        ObjectNode result = objectMapper.createObjectNode();
+
+        result.put("command", "report");
+        result.put("timestamp", timestamp);
+
+        if (account == null) {
+            ObjectNode errorOutput = objectMapper.createObjectNode();
+            errorOutput.put("timestamp", timestamp);
+            errorOutput.put("description", "Account not found");
+            result.set("output", errorOutput);
+            output.add(result);
+            return;
+        }
 
         ObjectNode accountDetails = objectMapper.createObjectNode();
         accountDetails.put("IBAN", account.getIBAN());
@@ -53,10 +56,8 @@ public class Report implements Command {
 
         accountDetails.set("transactions", transactionsArray);
 
-        reportNode.set("output", accountDetails);
-        reportNode.put("timestamp", timestamp);
-
-        output.add(reportNode);
+        result.set("output", accountDetails);
+        output.add(result);
     }
 
     private ObjectNode createReportOutput(Transaction transaction, ObjectMapper objectMapper) {
@@ -70,15 +71,18 @@ public class Report implements Command {
         if (transaction.getAmountPlusCurrency() != null) {
             transactionNode.put("amount", transaction.getAmountPlusCurrency());
         }
+
         if (transaction.getCurrency() != null) {
             transactionNode.put("currency", transaction.getCurrency());
         }
+
         if (transaction.getSenderIBAN() != null) {
             transactionNode.put("senderIBAN", transaction.getSenderIBAN());
         }
         if (transaction.getReceiverIBAN() != null) {
             transactionNode.put("receiverIBAN", transaction.getReceiverIBAN());
         }
+
         if (transaction.getCommerciant() != null) {
             transactionNode.put("commerciant", transaction.getCommerciant());
         }
@@ -93,6 +97,18 @@ public class Report implements Command {
         }
         if (transaction.getTransferType() != null) {
             transactionNode.put("transferType", transaction.getTransferType());
+        }
+
+        if (transaction.getError() != null && !transaction.getError().isEmpty()) {
+            transactionNode.put("error", transaction.getError());
+        }
+
+        if (transaction.getInvolvedAccounts() != null && !transaction.getInvolvedAccounts().isEmpty()) {
+            ArrayNode involvedAccountsNode = objectMapper.createArrayNode();
+            for (String iban : transaction.getInvolvedAccounts()) {
+                involvedAccountsNode.add(iban);
+            }
+            transactionNode.set("involvedAccounts", involvedAccountsNode);
         }
 
         return transactionNode;

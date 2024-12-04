@@ -93,6 +93,7 @@
   }
 }, {
   "command" : "report",
+  "timestamp" : 25,
   "output" : {
     "IBAN" : "RO58POOB7344468893732422",
     "balance" : 836.5,
@@ -114,10 +115,10 @@
       "amount" : 28.5,
       "commerciant" : "Burger King"
     } ]
-  },
-  "timestamp" : 25
+  }
 }, {
   "command" : "report",
+  "timestamp" : 26,
   "output" : {
     "IBAN" : "RO69POOB6209498372540635",
     "balance" : 902.5,
@@ -126,10 +127,10 @@
       "timestamp" : 2,
       "description" : "New account created"
     } ]
-  },
-  "timestamp" : 26
+  }
 }, {
   "command" : "report",
+  "timestamp" : 27,
   "output" : {
     "IBAN" : "RO90POOB5450777208072365",
     "balance" : 541.0,
@@ -142,15 +143,14 @@
       "receiverIBAN" : "RO69POOB6209498372540635",
       "transferType" : "sent"
     } ]
-  },
-  "timestamp" : 27
+  }
 }, {
   "command" : "report",
+  "timestamp" : 28,
   "output" : {
     "IBAN" : "RO65POOB8944016386845896",
     "balance" : 1367.0,
     "currency" : "EUR",
     "transactions" : [ ]
-  },
-  "timestamp" : 28
+  }
 } ]

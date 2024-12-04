@@ -109,17 +109,20 @@
   "timestamp" : 6
 }, {
   "command" : "report",
+  "timestamp" : 26,
   "output" : {
     "IBAN" : "RO58POOB7344468893732422",
     "balance" : 51504.25,
     "currency" : "INR",
     "transactions" : [ ]
-  },
-  "timestamp" : 26
+  }
 }, {
   "command" : "report",
   "timestamp" : 27,
-  "error" : "User not found for account IBAN: RO69POOB1255837963852827"
+  "output" : {
+    "timestamp" : 27,
+    "description" : "Account not found"
+  }
 }, {
   "command" : "printUsers",
   "output" : [ {
@@ -372,14 +375,6 @@
   } ],
   "timestamp" : 53
 }, {
-  "command" : "spendingsReport",
-  "timestamp" : 54,
-  "error" : "Invalid command: spendingsReport"
-}, {
-  "command" : "spendingsReport",
-  "timestamp" : 55,
-  "error" : "Invalid command: spendingsReport"
-}, {
   "command" : "printUsers",
   "output" : [ {
     "firstName" : "Sachi",
@@ -581,10 +576,6 @@
     } ]
   } ],
   "timestamp" : 71
-}, {
-  "command" : "spendingsReport",
-  "timestamp" : 75,
-  "error" : "Invalid command: spendingsReport"
 }, {
   "command" : "printUsers",
   "output" : [ {
@@ -800,9 +791,19 @@
   } ],
   "timestamp" : 78
 }, {
+  "command" : "changeInterestRate",
+  "timestamp" : 79,
+  "output" : {
+    "description" : "This is not a savings account",
+    "timestamp" : 79
+  }
+}, {
   "command" : "addInterest",
   "timestamp" : 80,
-  "error" : "Invalid command: addInterest"
+  "output" : {
+    "description" : "This is not a savings account",
+    "timestamp" : 80
+  }
 }, {
   "command" : "printUsers",
   "output" : [ {
@@ -1067,6 +1068,13 @@
     "amount" : 21280.0,
     "commerciant" : "KFC"
   }, {
+    "timestamp" : 48,
+    "description" : "Split payment of 9003.00 RON",
+    "currency" : "RON",
+    "amount" : 900.3,
+    "error" : "Account RO30POOB9523423715747796 has insufficient funds for a split payment.",
+    "involvedAccounts" : [ "RO30POOB9523423715747796", "RO90POOB5450777208072365", "RO79POOB3616857825600958", "RO58POOB7344468893732422", "RO65POOB8944016386845896", "RO58POOB2721178218599590", "RO69POOB6209498372540635", "RO76POOB4035116042454483", "RO37POOB7013767509830666", "RO19POOB4981055641668812" ]
+  }, {
     "timestamp" : 49,
     "description" : "Card payment",
     "amount" : 125.0,
@@ -1246,78 +1254,6 @@
     "transferType" : "sent"
   } ],
   "timestamp" : 123
-}, {
-  "command" : "deleteCard",
-  "timestamp" : 136,
-  "error" : "Account with card number 8207906978464446 not found"
-}, {
-  "command" : "deleteCard",
-  "timestamp" : 137,
-  "error" : "Account with card number 8207906978464446 not found"
-}, {
-  "command" : "deleteCard",
-  "timestamp" : 139,
-  "error" : "Account with card number 7004757825892043 not found"
-}, {
-  "command" : "deleteCard",
-  "timestamp" : 140,
-  "error" : "Account with card number 7004757825892043 not found"
-}, {
-  "command" : "deleteCard",
-  "timestamp" : 141,
-  "error" : "Account with card number 7004757825892043 not found"
-}, {
-  "command" : "deleteCard",
-  "timestamp" : 142,
-  "error" : "Account with card number 7004757825892043 not found"
-}, {
-  "command" : "deleteCard",
-  "timestamp" : 143,
-  "error" : "Account with card number 7004757825892043 not found"
-}, {
-  "command" : "deleteCard",
-  "timestamp" : 144,
-  "error" : "Account with card number 7004757825892043 not found"
-}, {
-  "command" : "deleteCard",
-  "timestamp" : 145,
-  "error" : "Account with card number 7004757825892043 not found"
-}, {
-  "command" : "deleteCard",
-  "timestamp" : 146,
-  "error" : "Account with card number 7004757825892043 not found"
-}, {
-  "command" : "deleteCard",
-  "timestamp" : 147,
-  "error" : "Account with card number 7004757825892043 not found"
-}, {
-  "command" : "deleteCard",
-  "timestamp" : 148,
-  "error" : "Account with card number 7004757825892043 not found"
-}, {
-  "command" : "deleteCard",
-  "timestamp" : 149,
-  "error" : "Account with card number 7004757825892043 not found"
-}, {
-  "command" : "deleteCard",
-  "timestamp" : 150,
-  "error" : "Account with card number 7004757825892043 not found"
-}, {
-  "command" : "deleteCard",
-  "timestamp" : 151,
-  "error" : "Account with card number 7004757825892043 not found"
-}, {
-  "command" : "deleteCard",
-  "timestamp" : 152,
-  "error" : "Account with card number 7004757825892043 not found"
-}, {
-  "command" : "deleteCard",
-  "timestamp" : 153,
-  "error" : "Account with card number 7004757825892043 not found"
-}, {
-  "command" : "deleteCard",
-  "timestamp" : 154,
-  "error" : "Account with card number 7004757825892043 not found"
 }, {
   "command" : "printUsers",
   "output" : [ {
@@ -1525,11 +1461,19 @@
   "timestamp" : 156
 }, {
   "command" : "report",
+  "timestamp" : 166,
   "output" : {
     "IBAN" : "RO69POOB6209498372540635",
     "balance" : 16301.759999999998,
     "currency" : "NZD",
     "transactions" : [ {
+      "timestamp" : 48,
+      "description" : "Split payment of 9003.00 RON",
+      "amount" : 900.3,
+      "currency" : "RON",
+      "error" : "Account RO30POOB9523423715747796 has insufficient funds for a split payment.",
+      "involvedAccounts" : [ "RO30POOB9523423715747796", "RO90POOB5450777208072365", "RO79POOB3616857825600958", "RO58POOB7344468893732422", "RO65POOB8944016386845896", "RO58POOB2721178218599590", "RO69POOB6209498372540635", "RO76POOB4035116042454483", "RO37POOB7013767509830666", "RO19POOB4981055641668812" ]
+    }, {
       "timestamp" : 52,
       "description" : "EMI payment for a home loan",
       "amount" : "49.89714285714286 NZD",
@@ -1537,10 +1481,10 @@
       "receiverIBAN" : "RO69POOB6209498372540635",
       "transferType" : "received"
     } ]
-  },
-  "timestamp" : 166
+  }
 }, {
   "command" : "report",
+  "timestamp" : 167,
   "output" : {
     "IBAN" : "RO65POOB8944016386845896",
     "balance" : 14669.339999999998,
@@ -1553,16 +1497,7 @@
       "receiverIBAN" : "RO65POOB8944016386845896",
       "transferType" : "received"
     } ]
-  },
-  "timestamp" : 167
-}, {
-  "command" : "spendingsReport",
-  "timestamp" : 170,
-  "error" : "Invalid command: spendingsReport"
-}, {
-  "command" : "spendingsReport",
-  "timestamp" : 171,
-  "error" : "Invalid command: spendingsReport"
+  }
 }, {
   "command" : "printUsers",
   "output" : [ {
@@ -1637,7 +1572,7 @@
       "type" : "classic",
       "cards" : [ {
         "cardNumber" : "6796819982034243",
-        "status" : "active"
+        "status" : "blocked"
       } ]
     } ]
   }, {
@@ -1992,7 +1927,7 @@
       "type" : "classic",
       "cards" : [ {
         "cardNumber" : "6796819982034243",
-        "status" : "active"
+        "status" : "blocked"
       } ]
     } ]
   }, {
@@ -2175,6 +2110,13 @@
     "description" : "Card payment",
     "amount" : 21280.0,
     "commerciant" : "KFC"
+  }, {
+    "timestamp" : 48,
+    "description" : "Split payment of 9003.00 RON",
+    "currency" : "RON",
+    "amount" : 900.3,
+    "error" : "Account RO30POOB9523423715747796 has insufficient funds for a split payment.",
+    "involvedAccounts" : [ "RO30POOB9523423715747796", "RO90POOB5450777208072365", "RO79POOB3616857825600958", "RO58POOB7344468893732422", "RO65POOB8944016386845896", "RO58POOB2721178218599590", "RO69POOB6209498372540635", "RO76POOB4035116042454483", "RO37POOB7013767509830666", "RO19POOB4981055641668812" ]
   }, {
     "timestamp" : 49,
     "description" : "Card payment",

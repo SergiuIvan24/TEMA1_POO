@@ -12,7 +12,9 @@ public abstract class Card {
         this.blocked = false;
     }
 
-
+    public String getCardType() {
+        return this.getClass().getSimpleName();
+    }
     public String getCardNumber() {
         return cardNumber;
     }

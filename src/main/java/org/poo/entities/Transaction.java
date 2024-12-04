@@ -1,9 +1,5 @@
 package org.poo.entities;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import java.util.List;
 
 public class Transaction {
@@ -20,8 +16,9 @@ public class Transaction {
     private final String commerciant;
     private final String amountPlusCurrency;
     private final List<String> involvedAccounts;
+    private String error;
 
-    private Transaction(Builder builder) {
+    private Transaction(Builder builder, String error) {
         this.timestamp = builder.timestamp;
         this.description = builder.description;
         this.senderIBAN = builder.senderIBAN;
@@ -35,10 +32,15 @@ public class Transaction {
         this.commerciant = builder.commerciant;
         this.amountPlusCurrency = builder.amountPlusCurrency;
         this.involvedAccounts = builder.involvedAccounts;
+        this.error = builder.error;
     }
 
     public int getTimestamp() {
         return timestamp;
+    }
+
+    public String getError() {
+        return error;
     }
 
     public String getDescription() {
@@ -101,11 +103,17 @@ public class Transaction {
         private String cardHolder;
         private String account;
         private String commerciant;
-        private String amountPlusCurrency; // Câmpul pe care îl folosești
+        private String amountPlusCurrency;
         private List<String> involvedAccounts;
+        private String error;
 
         public Builder setTimestamp(int timestamp) {
             this.timestamp = timestamp;
+            return this;
+        }
+
+        public Builder setError(String error) {
+            this.error = error;
             return this;
         }
 
@@ -170,7 +178,7 @@ public class Transaction {
         }
 
         public Transaction build() {
-            return new Transaction(this);
+            return new Transaction(this, null);
         }
     }
 }

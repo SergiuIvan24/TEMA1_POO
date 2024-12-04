@@ -20,17 +20,17 @@ public class DeleteCard implements Command {
     public void execute(ArrayNode output) {
         User user = userRepo.getUser(email);
         if (user == null) {
-            throw new IllegalArgumentException("User " + email + " not found");
+            return;
         }
 
         Account account = user.getAccountByCardNumber(cardNumber);
         if (account == null) {
-            throw new IllegalArgumentException("Account with card number " + cardNumber + " not found");
+            return;
         }
 
         Card card = account.getCard(cardNumber);
         if (card == null) {
-            throw new IllegalArgumentException("Card with number " + cardNumber + " not found");
+           return;
         }
         account.removeCard(card);
         Transaction transaction = new Transaction.Builder()

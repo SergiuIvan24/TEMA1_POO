@@ -54,7 +54,7 @@ public class PayOnline implements Command {
                     }
 
                     double convertedAmount = convertCurrency(amount, currency, account.getCurrency());
-                    if (account.getBalance() >= convertedAmount) {
+                    if (account.getBalance() >= convertedAmount && card.canPerformTransaction()) {
                         account.setBalance(account.getBalance() - convertedAmount);
 
                         Transaction transaction = new Transaction.Builder()
@@ -65,6 +65,10 @@ public class PayOnline implements Command {
                                 .build();
 
                         account.addTransaction(transaction);
+                        if(card.getCardType().equals("OneTimePayCard")) {
+                            ((OneTimePayCard) card).setUsed(true);
+                            card.setBlocked(true);
+                        }
                         return;
                     }
 

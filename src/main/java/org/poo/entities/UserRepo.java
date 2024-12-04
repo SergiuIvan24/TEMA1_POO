@@ -44,28 +44,52 @@ public class UserRepo {
             }
         }
 
-        for (ExchangeRate rate : exchangeRates) {
-            String intermediateCurrency = null;
-            double rateToIntermediate = 0.0;
+        Queue<String> queue = new LinkedList<>();
+        Map<String, Double> rates = new HashMap<>();
+        queue.add(from);
+        rates.put(from, 1.0);
 
-            if (rate.getFrom().equals(from) && !visitedCurrencies.contains(rate.getTo())) {
-                intermediateCurrency = rate.getTo();
-                rateToIntermediate = rate.getRate();
-            } else if (rate.getTo().equals(from) && !visitedCurrencies.contains(rate.getFrom())) {
-                intermediateCurrency = rate.getFrom();
-                rateToIntermediate = 1.0 / rate.getRate();
-            }
+        while (!queue.isEmpty()) {
+            String currentCurrency = queue.poll();
+            double currentRate = rates.get(currentCurrency);
 
-            if (intermediateCurrency != null) {
-                try {
-                    double rateFromIntermediate = getExchangeRate(intermediateCurrency, to, visitedCurrencies);
-                    return rateToIntermediate * rateFromIntermediate;
-                } catch (IllegalArgumentException e) {
+            for (ExchangeRate rate : exchangeRates) {
+                String nextCurrency = null;
+                double nextRate = 0.0;
+
+                if (rate.getFrom().equals(currentCurrency) && !visitedCurrencies.contains(rate.getTo())) {
+                    nextCurrency = rate.getTo();
+                    nextRate = rate.getRate();
+                } else if (rate.getTo().equals(currentCurrency) && !visitedCurrencies.contains(rate.getFrom())) {
+                    nextCurrency = rate.getFrom();
+                    nextRate = 1.0 / rate.getRate();
+                }
+
+                if (nextCurrency != null) {
+                    double totalRate = currentRate * nextRate;
+                    if (nextCurrency.equals(to)) {
+                        return totalRate;
+                    }
+                    if (!rates.containsKey(nextCurrency)) {
+                        rates.put(nextCurrency, totalRate);
+                        queue.add(nextCurrency);
+                    }
                 }
             }
         }
 
         throw new IllegalArgumentException("Exchange rate not found for " + from + " to " + to);
+    }
+
+    public String getIBANByAlias(String alias) {
+        for (User user : users.values()) {
+            for (Account account : user.getAccounts()) {
+                if (alias.equals(account.getAlias())) {
+                    return account.getIBAN();
+                }
+            }
+        }
+        return null;
     }
 
     public User getUserByIBAN(String IBAN) {
@@ -114,5 +138,16 @@ public class UserRepo {
 
     public void printUsers() {
         users.values().forEach(System.out::println);
+    }
+
+    public Account getAccountByIBAN(String accountIBAN) {
+        for (User user : users.values()) {
+            for (Account account : user.getAccounts()) {
+                if (account.getIBAN().equals(accountIBAN)) {
+                    return account;
+                }
+            }
+        }
+        return null;
     }
 }

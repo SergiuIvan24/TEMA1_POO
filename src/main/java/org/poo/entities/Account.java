@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public abstract class Account {
@@ -14,6 +15,8 @@ public abstract class Account {
     private ArrayList<Card> cards = new ArrayList<Card>();
     private double minimumBalance;
     private ArrayList<Transaction> transactions = new ArrayList<Transaction>();
+    private String alias;
+
 
     public List<Transaction> getTransactions() {
         return transactions;
@@ -78,6 +81,12 @@ public abstract class Account {
         throw new UnsupportedOperationException("Interest rate not supported for this account type.");
     }
 
+    public List<Transaction> getTransactionsSortedByTimestamp() {
+        transactions.sort(Comparator.comparingInt(Transaction::getTimestamp));
+        return transactions;
+    }
+
+
     public ObjectNode toJson(ObjectMapper objectMapper) {
         ObjectNode accountNode = objectMapper.createObjectNode();
         accountNode.put("IBAN", IBAN);
@@ -93,6 +102,16 @@ public abstract class Account {
 
         return accountNode;
     }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
+
+
 
     public abstract String getAccountType();
 

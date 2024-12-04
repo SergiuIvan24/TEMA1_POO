@@ -143,6 +143,20 @@ public class CommandFactory {
                         userRepo,
                         commandData.get("timestamp").asInt()
                 );
+            case "spendingsReport":
+                return new SpendingReport(
+                        commandData.get("startTimestamp").asInt(),
+                        commandData.get("endTimestamp").asInt(),
+                        commandData.get("account").asText(),
+                        commandData.get("timestamp").asInt(),
+                        userRepo
+                );
+                case "addInterest":
+                return new AddInterest(
+                        commandData.get("account").asText(),
+                        commandData.get("timestamp").asInt(),
+                        userRepo
+                );
 
             default:
                 throw new IllegalArgumentException("Invalid command: " + commandType);
