@@ -1,11 +1,12 @@
 package org.poo.entities;
 
-public class SavingsAccount extends Account{
+public final class SavingsAccount extends Account {
     private String accountType;
     private double interestRate;
 
-    public SavingsAccount(String IBAN, String currency, double balance, String accountType, double interestRate) {
-        super(IBAN, currency, balance);
+    public SavingsAccount(final String iban, final String currency, final double balance,
+                          final String accountType, final double interestRate) {
+        super(iban, currency, balance);
         this.interestRate = interestRate;
         this.accountType = accountType;
     }
@@ -15,7 +16,7 @@ public class SavingsAccount extends Account{
     }
 
     @Override
-    public void setInterestRate(double interestRate) {
+    public void setInterestRate(final double interestRate) {
         this.interestRate = interestRate;
     }
 

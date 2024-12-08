@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class User {
+public final class User {
     private String firstName;
     private String lastName;
     private String email;
@@ -16,59 +16,92 @@ public class User {
     private HashMap<String, String> aliases = new HashMap<>();
 
 
-    public User(String firstName, String lastName, String email) {
+    public User(final String firstName, final String lastName, final String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.accounts = new ArrayList<>();
     }
-
-    public void addAccount(Account account) {
+    /**
+     * Adauga un cont nou
+     * @param account contul de adaugat
+     */
+    public void addAccount(final Account account) {
         accounts.add(account);
     }
-
+    /**
+     * Returneaza conturile utilizatorului
+     * @return conturile utilizatorului
+     */
     public List<Account> getAccounts() {
         return accounts;
     }
-
-    public void deleteAccount(String accountIBAN) {
-        accounts.removeIf(account -> account.getIBAN().equals(accountIBAN));
+    /**
+     * Sterge un cont
+     * @param accountIBAN IBAN-ul contului de sters
+     */
+    public void deleteAccount(final String accountIBAN) {
+        accounts.removeIf(account -> account.getIban().equals(accountIBAN));
     }
-
+    /**
+     * Returneaza prenumele utilizatorului
+     * @return prenumele utilizatorului
+     */
     public String getFirstName() {
         return firstName;
     }
-
-    public void setFirstName(String firstName) {
+    /**
+     * Seteaza prenumele utilizatorului
+     * @param firstName prenumele de setat
+     */
+    public void setFirstName(final String firstName) {
         this.firstName = firstName;
     }
-
+    /**
+     * Returneaza numele utilizatorului
+     * @return numele utilizatorului
+     */
     public String getLastName() {
         return lastName;
     }
-
-    public void setLastName(String lastName) {
+    /**
+     * Seteaza numele utilizatorului
+     * @param lastName numele de setat
+     */
+    public void setLastName(final String lastName) {
         this.lastName = lastName;
     }
-
+    /**
+     * Returneaza emailul utilizatorului
+     * @return emailul utilizatorului
+     */
     public String getEmail() {
         return email;
     }
-
-    public void setEmail(String email) {
+    /**
+     * Seteaza emailul utilizatorului
+     * @param email emailul de setat
+     */
+    public void setEmail(final String email) {
         this.email = email;
     }
-
-    public Account getAccount(String iban) {
+    /**
+     * Returneaza contul cu IBAN-ul dat
+     * @return contul cu IBAN-ul dat
+     */
+    public Account getAccount(final String iban) {
         for (Account account : accounts) {
-            if (account.getIBAN().trim().equals(iban.trim())) {
+            if (account.getIban().trim().equals(iban.trim())) {
                 return account;
             }
         }
         return null;
     }
-
-    public Account getAccountByCardNumber(String cardNumber) {
+    /**
+     * Returneaza contul dupa un numar de card
+     * @return contul cu cardul dat
+     */
+    public Account getAccountByCardNumber(final String cardNumber) {
         for (Account account : accounts) {
             if (account.getCard(cardNumber) != null) {
                 return account;
@@ -76,29 +109,23 @@ public class User {
         }
         return null;
     }
-
-    public void setAlias(String alias, String IBAN) {
+    /**
+     * Seteaza un alias pentru un cont
+     * @param alias aliasul de setat
+     */
+    public void setAlias(final String alias, final String iban) {
         boolean accountExists = accounts.stream()
-                .anyMatch(account -> account.getIBAN().equals(IBAN));
+                .anyMatch(account -> account.getIban().equals(iban));
         if (!accountExists) {
             throw new IllegalArgumentException("IBAN not found for this user");
         }
-        aliases.put(alias, IBAN);
+        aliases.put(alias, iban);
     }
-
-    public String getIBANByAlias(String alias) {
-        String IBAN = aliases.get(alias);
-        if (IBAN == null) {
-            throw new IllegalArgumentException("Alias not found");
-        }
-        return IBAN;
-    }
-
-    public HashMap<String, String> getAliases() {
-        return aliases;
-    }
-
-    public ObjectNode toJson(ObjectMapper objectMapper) {
+    /**
+     * Returneaza un obiect de tip ObjectNode care contine informatii despre utilizator.
+     * @param objectMapper obiect de tip ObjectMapper
+     */
+    public ObjectNode toJson(final ObjectMapper objectMapper) {
         ObjectNode userNode = objectMapper.createObjectNode();
         userNode.put("firstName", firstName);
         userNode.put("lastName", lastName);

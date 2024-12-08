@@ -1,14 +1,12 @@
 package org.poo.Commands;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.poo.entities.Account;
 import org.poo.entities.Transaction;
 import org.poo.entities.User;
 import org.poo.entities.UserRepo;
 
-public class SendMoney implements Command {
+public final class SendMoney implements Command {
     private String senderIBAN;
     private String receiverIBAN;
     private double amount;
@@ -17,7 +15,10 @@ public class SendMoney implements Command {
     private String description;
     private UserRepo userRepo;
 
-    public SendMoney(String senderIBAN, String receiverIBAN, double amount, int timestamp, String email, String description, UserRepo userRepo) {
+    public SendMoney(final String senderIBAN, final String receiverIBAN,
+                     final double amount, final int timestamp,
+                     final String email, final String description,
+                     final UserRepo userRepo) {
         this.senderIBAN = senderIBAN;
         this.receiverIBAN = receiverIBAN;
         this.amount = amount;
@@ -28,7 +29,7 @@ public class SendMoney implements Command {
     }
 
     @Override
-    public void execute(ArrayNode output) {
+    public void execute(final ArrayNode output) {
         User sender = userRepo.getUser(senderEmail);
         if (sender == null) {
             return;
@@ -39,20 +40,27 @@ public class SendMoney implements Command {
             return;
         }
 
-        String actualReceiverIBAN = userRepo.getIBANByAlias(receiverIBAN);
-        if (actualReceiverIBAN == null) {
-            actualReceiverIBAN = receiverIBAN;
+        String realReceiverIBAN = userRepo.getIBANByAlias(receiverIBAN);
+        if (realReceiverIBAN == null) {
+            Account receiverAccountCheck = userRepo.getAccountByIBAN(receiverIBAN);
+            if (receiverAccountCheck != null) {
+                realReceiverIBAN = receiverIBAN;
+            } else {
+                return;
+            }
         }
 
-        User receiver = userRepo.getUserByIBAN(actualReceiverIBAN);
+        User receiver = userRepo.getUserByIBAN(realReceiverIBAN);
         if (receiver == null) {
             return;
         }
 
-        Account receiverAccount = receiver.getAccount(actualReceiverIBAN);
+        Account receiverAccount = receiver.getAccount(realReceiverIBAN);
+
         if (receiverAccount == null) {
             return;
         }
+        double newSenderBalance = senderAccount.getBalance() - amount;
 
         if (senderAccount.getBalance() < amount) {
             Transaction insufficientFundsTransaction = new Transaction.Builder()
@@ -63,21 +71,14 @@ public class SendMoney implements Command {
             return;
         }
 
-
         double convertedAmount;
-        try {
-            convertedAmount = userRepo.getExchangeRate(senderAccount.getCurrency(), receiverAccount.getCurrency()) * amount;
-        } catch (IllegalArgumentException e) {
-            ObjectMapper mapper = new ObjectMapper();
-            ObjectNode errorNode = mapper.createObjectNode();
-            errorNode.put("error", e.getMessage());
-            errorNode.put("timestamp", timestamp);
-            output.add(errorNode);
-            return;
-        }
+        convertedAmount = userRepo.getExchangeRate(senderAccount.getCurrency(),
+                receiverAccount.getCurrency()) * amount;
 
-        String senderAmountWithCurrency = String.valueOf(amount) + " " + senderAccount.getCurrency();
-        String receiverAmountWithCurrency = String.valueOf(convertedAmount) + " " + receiverAccount.getCurrency();
+        String senderAmountWithCurrency =
+                String.valueOf(amount) + " " + senderAccount.getCurrency();
+        String receiverAmountWithCurrency =
+                String.valueOf(convertedAmount) + " " + receiverAccount.getCurrency();
 
         senderAccount.setBalance(senderAccount.getBalance() - amount);
         receiverAccount.setBalance(receiverAccount.getBalance() + convertedAmount);

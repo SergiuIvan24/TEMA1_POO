@@ -6,14 +6,14 @@ import org.poo.entities.UserRepo;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommandFactory {
+public final class CommandFactory {
     private final UserRepo userRepo;
 
-    public CommandFactory(UserRepo userRepo) {
+    public CommandFactory(final UserRepo userRepo) {
         this.userRepo = userRepo;
     }
 
-    private List<String> getAccountsList(JsonNode accountsNode) {
+    private List<String> getAccountsList(final JsonNode accountsNode) {
         List<String> accounts = new ArrayList<>();
         for (JsonNode accountNode : accountsNode) {
             accounts.add(accountNode.asText());
@@ -21,10 +21,20 @@ public class CommandFactory {
         return accounts;
     }
 
-    public Command createCommand(String commandType, JsonNode commandData) {
+    /**
+     * Creates a command based on the provided command type and data.
+     *
+     * @param commandType the type of command to create
+     * @param commandData the data required to create the command
+     * @return the created command
+     * @throws IllegalArgumentException if the command type is invalid
+     */
+
+    public Command createCommand(final String commandType, final JsonNode commandData) {
         switch (commandType) {
             case "addAccount":
-                Double interestRate = commandData.has("interestRate") && !commandData.get("interestRate").isNull()
+                Double interestRate = commandData.has("interestRate")
+                        && !commandData.get("interestRate").isNull()
                         ? commandData.get("interestRate").asDouble()
                         : null;
                 return new AddAccount(

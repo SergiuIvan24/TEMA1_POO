@@ -1,7 +1,5 @@
 package org.poo.Commands;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.poo.entities.*;
 import org.poo.utils.Utils;
 
@@ -11,9 +9,10 @@ class AddAccount implements Command {
     private final String currency;
     private final String accountType;
     private final int timestamp;
-    private Double interestRate;
+    private final Double interestRate;
 
-    public AddAccount(UserRepo userRepo, String email, String currency, String accountType, int timestamp, Double interestRate) {
+    AddAccount(final UserRepo userRepo, final String email, final String currency,
+               final String accountType, final int timestamp, final Double interestRate) {
         this.userRepo = userRepo;
         this.email = email;
         this.currency = currency;
@@ -23,22 +22,25 @@ class AddAccount implements Command {
     }
 
     @Override
-    public void execute(ArrayNode output) {
+    public void execute(final ArrayNode output) {
         User user = userRepo.getUser(email);
-        if (user == null) {
-            throw new IllegalArgumentException("User not found for email: " + email);
-        }
-
         Account newAccount;
+
         if (accountType.equalsIgnoreCase("savings")) {
-            if (interestRate == null) {
-                throw new IllegalArgumentException("Interest rate must be provided for savings accounts");
-            }
-            newAccount = new SavingsAccount(Utils.generateIBAN(), currency, 0, "savings", interestRate);
-        } else if (accountType.equalsIgnoreCase("classic")) {
-            newAccount = new ClassicAccount(Utils.generateIBAN(), currency, 0, "classic");
+            newAccount = new SavingsAccount(
+                    Utils.generateIBAN(),
+                    currency,
+                    0,
+                    "savings",
+                    interestRate
+            );
         } else {
-            throw new IllegalArgumentException("Unknown account type: " + accountType);
+            newAccount = new ClassicAccount(
+                    Utils.generateIBAN(),
+                    currency,
+                    0,
+                    "classic"
+            );
         }
 
         user.addAccount(newAccount);
@@ -51,3 +53,4 @@ class AddAccount implements Command {
         newAccount.addTransaction(transaction);
     }
 }
+

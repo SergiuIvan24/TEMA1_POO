@@ -52,11 +52,11 @@
   "timestamp" : 7
 }, {
   "command" : "payOnline",
-  "timestamp" : 11,
   "output" : {
     "timestamp" : 11,
     "description" : "Card not found"
-  }
+  },
+  "timestamp" : 11
 }, {
   "command" : "printUsers",
   "output" : [ {

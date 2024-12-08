@@ -10,7 +10,8 @@ class CreateCard implements Command {
     private final UserRepo userRepo;
     private final int timestamp;
 
-    public CreateCard(String account, String email, UserRepo userRepo, int timestamp) {
+    CreateCard(final String account, final String email,
+                      final UserRepo userRepo, final int timestamp) {
         this.account = account;
         this.email = email;
         this.userRepo = userRepo;
@@ -18,15 +19,15 @@ class CreateCard implements Command {
     }
 
     @Override
-    public void execute(ArrayNode output) {
+    public void execute(final ArrayNode output) {
         User user = userRepo.getUser(email);
         if (user == null) {
-            throw new IllegalArgumentException("User not found for email: " + email);
+            return;
         }
 
         Account account = user.getAccount(this.account);
         if (account == null) {
-            throw new IllegalArgumentException("Account not found for IBAN: " + this.account);
+            return;
         }
 
         Card newCard = new RegularCard(Utils.generateCardNumber());

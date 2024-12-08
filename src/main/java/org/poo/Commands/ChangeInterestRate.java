@@ -3,18 +3,16 @@ package org.poo.Commands;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.poo.entities.Account;
-import org.poo.entities.SavingsAccount;
-import org.poo.entities.User;
-import org.poo.entities.UserRepo;
+import org.poo.entities.*;
 
-public class ChangeInterestRate implements Command {
+public final class ChangeInterestRate implements Command {
     private String accountIBAN;
     private double interestRate;
     private final int timestamp;
     private UserRepo userRepo;
 
-    public ChangeInterestRate(String accountIBAN, double interestRate, int timestamp, UserRepo userRepo) {
+    public ChangeInterestRate(final String accountIBAN, final double interestRate,
+                              final int timestamp, final UserRepo userRepo) {
         this.accountIBAN = accountIBAN;
         this.interestRate = interestRate;
         this.timestamp = timestamp;
@@ -22,21 +20,16 @@ public class ChangeInterestRate implements Command {
     }
 
     @Override
-    public void execute(ArrayNode output) {
+    public void execute(final ArrayNode output) {
         ObjectMapper objectMapper = new ObjectMapper();
         ObjectNode result = objectMapper.createObjectNode();
         result.put("command", "changeInterestRate");
         result.put("timestamp", timestamp);
         User user = userRepo.getUserByIBAN(accountIBAN);
-        if (user == null) {
-            return;
-        }
 
         Account account = user.getAccount(accountIBAN);
-        if (account == null) {
-            return;
-        }
-        if(!account.getAccountType().equals("savings")) {
+
+        if (!account.getAccountType().equals("savings")) {
             ObjectNode errorOutput = objectMapper.createObjectNode();
             errorOutput.put("description", "This is not a savings account");
             errorOutput.put("timestamp", timestamp);
@@ -44,10 +37,14 @@ public class ChangeInterestRate implements Command {
             output.add(result);
             return;
         }
-
-        try {
             account.setInterestRate(interestRate);
-        } catch (UnsupportedOperationException e) {
-        }
+            Transaction transaction = new Transaction.Builder()
+                    .setTimestamp(timestamp)
+                    .setDescription(String.format(
+                            "Interest rate of the account changed to %.2f",
+                            interestRate))
+                    .build();
+            account.addTransaction(transaction);
+
     }
 }

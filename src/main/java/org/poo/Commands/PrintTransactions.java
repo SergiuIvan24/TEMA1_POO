@@ -12,23 +12,20 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class PrintTransactions implements Command {
+public final class PrintTransactions implements Command {
     private String email;
     private int timestamp;
     private UserRepo userRepo;
 
-    public PrintTransactions(String email, int timestamp, UserRepo userRepo) {
+    public PrintTransactions(final String email, final int timestamp, final UserRepo userRepo) {
         this.email = email;
         this.timestamp = timestamp;
         this.userRepo = userRepo;
     }
 
     @Override
-    public void execute(ArrayNode output) {
+    public void execute(final ArrayNode output) {
         User user = userRepo.getUser(email);
-        if (user == null) {
-            throw new IllegalArgumentException("User not found for email: " + email);
-        }
 
         ObjectMapper objectMapper = new ObjectMapper();
         ObjectNode resultNode = objectMapper.createObjectNode();
@@ -81,7 +78,8 @@ public class PrintTransactions implements Command {
             if (transaction.getError() != null) {
                 transactionNode.put("error", transaction.getError());
             }
-            if (transaction.getInvolvedAccounts() != null && !transaction.getInvolvedAccounts().isEmpty()) {
+            if (transaction.getInvolvedAccounts() != null
+                    && !transaction.getInvolvedAccounts().isEmpty()) {
                 ArrayNode involvedAccountsNode = objectMapper.createArrayNode();
                 for (String iban : transaction.getInvolvedAccounts()) {
                     involvedAccountsNode.add(iban);
@@ -92,8 +90,8 @@ public class PrintTransactions implements Command {
             transactionsArray.add(transactionNode);
         }
 
-        resultNode.set("output",transactionsArray);
-        resultNode.put("timestamp",timestamp);
+        resultNode.set("output", transactionsArray);
+        resultNode.put("timestamp", timestamp);
         output.add(resultNode);
     }
 }

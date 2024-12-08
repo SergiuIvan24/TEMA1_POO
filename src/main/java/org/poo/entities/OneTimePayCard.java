@@ -3,10 +3,10 @@ package org.poo.entities;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-public class OneTimePayCard extends Card{
+public final class OneTimePayCard extends Card {
     private boolean used;
 
-    public OneTimePayCard(String cardNumber) {
+    public OneTimePayCard(final String cardNumber) {
         super(cardNumber);
         this.used = false;
     }
@@ -17,12 +17,12 @@ public class OneTimePayCard extends Card{
     public boolean canPerformTransaction() {
         return !isBlocked() && !isUsed();
     }
-    public void setUsed(boolean used) {
+    public void setUsed(final boolean used) {
         this.used = used;
     }
 
     @Override
-    public ObjectNode toJson(ObjectMapper mapper) {
+    public ObjectNode toJson(final ObjectMapper mapper) {
         ObjectNode cardNode = mapper.createObjectNode();
         cardNode.put("cardNumber", getCardNumber());
         String status = isBlocked() ? "blocked" : "active";

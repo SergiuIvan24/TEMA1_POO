@@ -2,7 +2,7 @@ package org.poo.entities;
 
 import java.util.List;
 
-public class Transaction {
+public final class Transaction {
     private final int timestamp;
     private final String description;
     private final String senderIBAN;
@@ -18,7 +18,7 @@ public class Transaction {
     private final List<String> involvedAccounts;
     private String error;
 
-    private Transaction(Builder builder, String error) {
+    private Transaction(final Builder builder, final String error) {
         this.timestamp = builder.timestamp;
         this.description = builder.description;
         this.senderIBAN = builder.senderIBAN;
@@ -91,7 +91,7 @@ public class Transaction {
         return involvedAccounts;
     }
 
-    public static class Builder {
+    public static final class Builder {
         private int timestamp;
         private String description;
         private String senderIBAN;
@@ -107,76 +107,136 @@ public class Transaction {
         private List<String> involvedAccounts;
         private String error;
 
-        public Builder setTimestamp(int timestamp) {
+        /**
+         * Seteaza timestamp-ul tranzactiei.
+         * @param timestamp
+         * @return
+         */
+        public Builder setTimestamp(final int timestamp) {
             this.timestamp = timestamp;
             return this;
         }
-
-        public Builder setError(String error) {
+        /**
+         * Seteaza eroarea tranzactiei.
+         * @param error
+         * @return
+         */
+        public Builder setError(final String error) {
             this.error = error;
             return this;
         }
-
-        public Builder setDescription(String description) {
+        /**
+         * Seteaza descrierea tranzactiei.
+         * @param description
+         * @return
+         */
+        public Builder setDescription(final String description) {
             this.description = description;
             return this;
         }
-
-        public Builder setSenderIBAN(String senderIBAN) {
+        /**
+         * Seteaza IBAN-ul expeditorului.
+         * @param senderIBAN
+         * @return
+         */
+        public Builder setSenderIBAN(final String senderIBAN) {
             this.senderIBAN = senderIBAN;
             return this;
         }
-
-        public Builder setReceiverIBAN(String receiverIBAN) {
+        /**
+         * Seteaza IBAN-ul destinatarului.
+         * @param receiverIBAN
+         * @return
+         */
+        public Builder setReceiverIBAN(final String receiverIBAN) {
             this.receiverIBAN = receiverIBAN;
             return this;
         }
-
-        public Builder setAmount(double amount) {
+        /**
+         * Seteaza suma tranzactiei.
+         * @param amount
+         * @return
+         */
+        public Builder setAmount(final double amount) {
             this.amount = amount;
             return this;
         }
-
-        public Builder setCurrency(String currency) {
+        /**
+         * Seteaza valuta tranzactiei.
+         * @param currency
+         * @return
+         */
+        public Builder setCurrency(final String currency) {
             this.currency = currency;
             return this;
         }
-
-        public Builder setTransferType(String transferType) {
+        /**
+         * Seteaza tipul tranzactiei.
+         * @param transferType
+         * @return
+         */
+        public Builder setTransferType(final String transferType) {
             this.transferType = transferType;
             return this;
         }
-
-        public Builder setCard(String card) {
+        /**
+         * Seteaza cardul tranzactiei.
+         * @param card
+         * @return
+         */
+        public Builder setCard(final String card) {
             this.card = card;
             return this;
         }
-
-        public Builder setCardHolder(String cardHolder) {
+        /**
+         * Seteaza detinatorul cardului.
+         * @param cardHolder
+         * @return
+         */
+        public Builder setCardHolder(final String cardHolder) {
             this.cardHolder = cardHolder;
             return this;
         }
-
-        public Builder setAccount(String account) {
+        /**
+         * Seteaza contul tranzactiei.
+         * @param account
+         * @return
+         */
+        public Builder setAccount(final String account) {
             this.account = account;
             return this;
         }
-
-        public Builder setCommerciant(String commerciant) {
+        /**
+         * Seteaza comerciantul tranzactiei.
+         * @param commerciant
+         * @return
+         */
+        public Builder setCommerciant(final String commerciant) {
             this.commerciant = commerciant;
             return this;
         }
-
-        public Builder setAmountPlusCurrency(String amountPlusCurrency) {
+        /**
+         * Seteaza suma si valuta tranzactiei ca un string.
+         * @param amountPlusCurrency
+         * @return
+         */
+        public Builder setAmountPlusCurrency(final String amountPlusCurrency) {
             this.amountPlusCurrency = amountPlusCurrency;
             return this;
         }
-
-        public Builder setInvolvedAccounts(List<String> involvedAccounts) {
+        /**
+         * Seteaza conturile implicate in tranzactie(pt split).
+         * @param involvedAccounts
+         * @return
+         */
+        public Builder setInvolvedAccounts(final List<String> involvedAccounts) {
             this.involvedAccounts = involvedAccounts;
             return this;
         }
-
+        /**
+         * Construieste tranzactia.
+         * @return
+         */
         public Transaction build() {
             return new Transaction(this, null);
         }

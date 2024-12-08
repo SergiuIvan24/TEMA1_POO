@@ -11,7 +11,8 @@ class AddFunds implements Command {
     private final UserRepo userRepo;
     private final int timestamp;
 
-    public AddFunds(String accountIBAN, double amount, UserRepo userRepo, int timestamp) {
+    AddFunds(final String accountIBAN, final double amount,
+                    final UserRepo userRepo, final int timestamp) {
         this.accountIBAN = accountIBAN;
         this.amount = amount;
         this.userRepo = userRepo;
@@ -19,16 +20,10 @@ class AddFunds implements Command {
     }
 
     @Override
-    public void execute(ArrayNode output) {
+    public void execute(final ArrayNode output) {
             User user = userRepo.getUserByIBAN(accountIBAN);
-            if (user == null) {
-                throw new IllegalArgumentException("User not found for IBAN: " + accountIBAN);
-            }
 
             Account account = user.getAccount(accountIBAN);
-            if (account == null) {
-                throw new IllegalArgumentException("Account not found for IBAN: " + accountIBAN);
-            }
 
             account.setBalance(account.getBalance() + amount);
 

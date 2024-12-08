@@ -193,11 +193,11 @@
   "timestamp" : 28
 }, {
   "command" : "payOnline",
-  "timestamp" : 30,
   "output" : {
     "timestamp" : 30,
     "description" : "Card not found"
-  }
+  },
+  "timestamp" : 30
 }, {
   "command" : "printTransactions",
   "output" : [ {

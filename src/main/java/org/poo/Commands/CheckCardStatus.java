@@ -5,25 +5,27 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.poo.entities.*;
 
-public class CheckCardStatus implements Command {
+public final class CheckCardStatus implements Command {
+    public static final int MIN_DIF = 30;
     private String cardNumber;
     private final int timestamp;
     private UserRepo userRepo;
 
-    public CheckCardStatus(String cardNumber, int timestamp, UserRepo userRepo) {
+    public CheckCardStatus(final String cardNumber, final int timestamp, final UserRepo userRepo) {
         this.cardNumber = cardNumber;
         this.timestamp = timestamp;
         this.userRepo = userRepo;
     }
 
     @Override
-    public void execute(ArrayNode output) {
+    public void execute(final ArrayNode output) {
         ObjectMapper objectMapper = new ObjectMapper();
         ObjectNode result = objectMapper.createObjectNode();
         result.put("command", "checkCardStatus");
         result.put("timestamp", timestamp);
 
         User user = userRepo.getUserByCardNumber(cardNumber);
+
         if (user == null) {
             ObjectNode errorNode = objectMapper.createObjectNode();
             errorNode.put("timestamp", timestamp);
@@ -43,7 +45,7 @@ public class CheckCardStatus implements Command {
                                 .setDescription("You have reached the minimum amount of funds, the card will be frozen")
                                 .build();
                         account.addTransaction(frozenTransaction);
-                    } else if (account.getBalance() - account.getMinimumBalance() <= 30) {
+                    } else if (account.getBalance() - account.getMinimumBalance() <= MIN_DIF) {
                         Transaction warningTransaction = new Transaction.Builder()
                                 .setTimestamp(timestamp)
                                 .setDescription("You have reached the minimum amount of funds, the card will be frozen")
@@ -55,6 +57,4 @@ public class CheckCardStatus implements Command {
             }
         }
     }
-
-
 }

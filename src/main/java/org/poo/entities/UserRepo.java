@@ -5,30 +5,53 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.*;
 
-public class UserRepo {
+public final class UserRepo {
     private Map<String, User> users = new LinkedHashMap<>();
     private List<ExchangeRate> exchangeRates = new ArrayList<>();
 
     public UserRepo() {
     }
 
-    public void addUser(User user) {
+    /**
+     * Adauga un utilizator in lista de utilizatori
+     * @param user utilizatorul care trebuie adaugat
+     */
+    public void addUser(final User user) {
         users.put(user.getEmail(), user);
     }
-
-    public User getUser(String email) {
+    /**
+     * Gaseste un utilizator dupa email
+     * @param email email-ul utilizatorului
+     */
+    public User getUser(final String email) {
         return users.get(email);
     }
-
-    public void addExchangeRate(String from, String to, double rate) {
+    /**
+     * Adauga un exchange rate in lista de exchange rates
+     * @param from valuta de la care se face conversia
+     * @param to valuta in care se face conversia
+     * @param rate rata de schimb
+     */
+    public void addExchangeRate(final String from, final String to, final double rate) {
         exchangeRates.add(new ExchangeRate(from, to, rate));
     }
-
-    public double getExchangeRate(String from, String to) {
+    /**
+     * Returneaza rata de schimb dintre doua valute
+     * @param from valuta de la care se face conversia
+     * @param to valuta in care se face conversia
+     */
+    public double getExchangeRate(final String from, final String to) {
         return getExchangeRate(from, to, new HashSet<>());
     }
-
-    private double getExchangeRate(String from, String to, Set<String> visitedCurrencies) {
+    /**
+     * Returneaza rata de schimb dintre doua valute, cautand si conversii
+     * indirecte
+     * @param from valuta de la care se face conversia
+     * @param to valuta in care se face conversia
+     * @param visitedCurrencies set cu valutele vizitate
+     */
+    private double getExchangeRate(final String from, final String to,
+                                   final Set<String> visitedCurrencies) {
         if (from.equals(to)) {
             return 1.0;
         }
@@ -57,10 +80,12 @@ public class UserRepo {
                 String nextCurrency = null;
                 double nextRate = 0.0;
 
-                if (rate.getFrom().equals(currentCurrency) && !visitedCurrencies.contains(rate.getTo())) {
+                if (rate.getFrom().equals(currentCurrency)
+                        && !visitedCurrencies.contains(rate.getTo())) {
                     nextCurrency = rate.getTo();
                     nextRate = rate.getRate();
-                } else if (rate.getTo().equals(currentCurrency) && !visitedCurrencies.contains(rate.getFrom())) {
+                } else if (rate.getTo().equals(currentCurrency)
+                        && !visitedCurrencies.contains(rate.getFrom())) {
                     nextCurrency = rate.getFrom();
                     nextRate = 1.0 / rate.getRate();
                 }
@@ -77,37 +102,47 @@ public class UserRepo {
                 }
             }
         }
-
-        throw new IllegalArgumentException("Exchange rate not found for " + from + " to " + to);
+        return -1.0;
     }
-
-    public String getIBANByAlias(String alias) {
+    /**
+     * Returneaza IBAN-ul unui cont dupa alias
+     * @param alias alias-ul contului
+     */
+    public String getIBANByAlias(final String alias) {
         for (User user : users.values()) {
             for (Account account : user.getAccounts()) {
                 if (alias.equals(account.getAlias())) {
-                    return account.getIBAN();
+                    return account.getIban();
                 }
             }
         }
         return null;
     }
-
-    public User getUserByIBAN(String IBAN) {
+    /**
+     * Returneaza un utilizator dupa IBAN
+     * @param iban IBAN-ul contului
+     */
+    public User getUserByIBAN(final String iban) {
         for (User user : users.values()) {
             for (Account account : user.getAccounts()) {
-                if (account.getIBAN().equals(IBAN)) {
+                if (account.getIban().equals(iban)) {
                     return user;
                 }
             }
         }
         return null;
     }
-
+    /**
+     * Returneaza toti utilizatorii
+     */
     public Collection<User> getAllUsers() {
         return users.values();
     }
-
-    public User getUserByCardNumber(String cardNumber) {
+    /**
+     * Returneaza un utilizator dupa numarul de card
+     * @param cardNumber numarul de card
+     */
+    public User getUserByCardNumber(final String cardNumber) {
         for (User user : users.values()) {
             for (Account account : user.getAccounts()) {
                 for (Card card : account.getCards()) {
@@ -119,31 +154,45 @@ public class UserRepo {
         }
         return null;
     }
-
-    public boolean deleteAccount(String email, String iban) {
+    /**
+     * Sterge un cont dupa email si IBAN
+     * @param email email-ul utilizatorului
+     * @param iban IBAN-ul contului
+     */
+    public boolean deleteAccount(final String email, final String iban) {
         User user = getUser(email);
         if (user == null) {
             return false;
         }
-        return user.getAccounts().removeIf(account -> account.getIBAN().equals(iban) && account.getBalance() == 0);
+        return user.getAccounts()
+                .removeIf(account -> account.getIban().equals(iban)
+                        && account.getBalance() == 0);
     }
-
-    public ArrayNode toJson(ObjectMapper objectMapper) {
+    /**
+     * Returneaza un obiect de tip ArrayNode care contine informatii despre utilizatori
+     * @param objectMapper obiect de tip ObjectMapper
+     */
+    public ArrayNode toJson(final ObjectMapper objectMapper) {
         ArrayNode usersArray = objectMapper.createArrayNode();
         for (User user : users.values()) {
             usersArray.add(user.toJson(objectMapper));
         }
         return usersArray;
     }
-
+    /**
+     * Afiseaza toti utilizatorii
+     */
     public void printUsers() {
         users.values().forEach(System.out::println);
     }
-
-    public Account getAccountByIBAN(String accountIBAN) {
+    /**
+     * Returneaza un cont dupa IBAN
+     * @param accountIBAN IBAN-ul contului
+     */
+    public Account getAccountByIBAN(final String accountIBAN) {
         for (User user : users.values()) {
             for (Account account : user.getAccounts()) {
-                if (account.getIBAN().equals(accountIBAN)) {
+                if (account.getIban().equals(accountIBAN)) {
                     return account;
                 }
             }

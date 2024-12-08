@@ -5,32 +5,28 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.poo.entities.*;
 
-public class AddInterest implements Command {
+public final class AddInterest implements Command {
     private String accountIBAN;
     private final int timestamp;
     private UserRepo userRepo;
 
 
-    public AddInterest(String accountIBAN, int timestamp, UserRepo userRepo) {
+    public AddInterest(final String accountIBAN, final int timestamp, final UserRepo userRepo) {
         this.accountIBAN = accountIBAN;
         this.timestamp = timestamp;
         this.userRepo = userRepo;
     }
 
     @Override
-    public void execute(ArrayNode output) {
+    public void execute(final ArrayNode output) {
         User user = userRepo.getUserByIBAN(accountIBAN);
         ObjectMapper objectMapper = new ObjectMapper();
         ObjectNode result = objectMapper.createObjectNode();
         result.put("command", "addInterest");
         result.put("timestamp", timestamp);
 
-        if (user == null) {
-            return;
-        }
-
         Account account = user.getAccount(accountIBAN);
-        if(!account.getAccountType().equals("savings")) {
+        if (!account.getAccountType().equals("savings")) {
             ObjectNode errorOutput = objectMapper.createObjectNode();
             errorOutput.put("description", "This is not a savings account");
             errorOutput.put("timestamp", timestamp);

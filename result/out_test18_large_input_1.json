@@ -375,6 +375,39 @@
   } ],
   "timestamp" : 53
 }, {
+  "command" : "spendingsReport",
+  "timestamp" : 54,
+  "output" : {
+    "IBAN" : "RO58POOB7344468893732422",
+    "balance" : 41457.25,
+    "currency" : "INR",
+    "transactions" : [ {
+      "timestamp" : 43,
+      "description" : "Card payment",
+      "amount" : 83.0,
+      "commerciant" : "Adidas"
+    }, {
+      "timestamp" : 44,
+      "description" : "Card payment",
+      "amount" : 21280.0,
+      "commerciant" : "KFC"
+    } ],
+    "commerciants" : [ {
+      "commerciant" : "Adidas",
+      "total" : 83.0
+    }, {
+      "commerciant" : "KFC",
+      "total" : 21280.0
+    } ]
+  }
+}, {
+  "command" : "spendingsReport",
+  "timestamp" : 55,
+  "output" : {
+    "description" : "Account not found",
+    "timestamp" : 55
+  }
+}, {
   "command" : "printUsers",
   "output" : [ {
     "firstName" : "Sachi",
@@ -576,6 +609,16 @@
     } ]
   } ],
   "timestamp" : 71
+}, {
+  "command" : "spendingsReport",
+  "timestamp" : 75,
+  "output" : {
+    "IBAN" : "RO53POOB7122855990652257",
+    "balance" : 0.0,
+    "currency" : "CHF",
+    "transactions" : [ ],
+    "commerciants" : [ ]
+  }
 }, {
   "command" : "printUsers",
   "output" : [ {
@@ -1072,7 +1115,7 @@
     "description" : "Split payment of 9003.00 RON",
     "currency" : "RON",
     "amount" : 900.3,
-    "error" : "Account RO30POOB9523423715747796 has insufficient funds for a split payment.",
+    "error" : "Account RO19POOB4981055641668812 has insufficient funds for a split payment.",
     "involvedAccounts" : [ "RO30POOB9523423715747796", "RO90POOB5450777208072365", "RO79POOB3616857825600958", "RO58POOB7344468893732422", "RO65POOB8944016386845896", "RO58POOB2721178218599590", "RO69POOB6209498372540635", "RO76POOB4035116042454483", "RO37POOB7013767509830666", "RO19POOB4981055641668812" ]
   }, {
     "timestamp" : 49,
@@ -1471,7 +1514,7 @@
       "description" : "Split payment of 9003.00 RON",
       "amount" : 900.3,
       "currency" : "RON",
-      "error" : "Account RO30POOB9523423715747796 has insufficient funds for a split payment.",
+      "error" : "Account RO19POOB4981055641668812 has insufficient funds for a split payment.",
       "involvedAccounts" : [ "RO30POOB9523423715747796", "RO90POOB5450777208072365", "RO79POOB3616857825600958", "RO58POOB7344468893732422", "RO65POOB8944016386845896", "RO58POOB2721178218599590", "RO69POOB6209498372540635", "RO76POOB4035116042454483", "RO37POOB7013767509830666", "RO19POOB4981055641668812" ]
     }, {
       "timestamp" : 52,
@@ -1497,6 +1540,26 @@
       "receiverIBAN" : "RO65POOB8944016386845896",
       "transferType" : "received"
     } ]
+  }
+}, {
+  "command" : "spendingsReport",
+  "timestamp" : 170,
+  "output" : {
+    "IBAN" : "RO76POOB4035116042454483",
+    "balance" : 917.1964285714286,
+    "currency" : "EUR",
+    "transactions" : [ ],
+    "commerciants" : [ ]
+  }
+}, {
+  "command" : "spendingsReport",
+  "timestamp" : 171,
+  "output" : {
+    "IBAN" : "RO19POOB4981055641668812",
+    "balance" : 520.8928571428571,
+    "currency" : "CAD",
+    "transactions" : [ ],
+    "commerciants" : [ ]
   }
 }, {
   "command" : "printUsers",
@@ -1571,8 +1634,8 @@
       "currency" : "EUR",
       "type" : "classic",
       "cards" : [ {
-        "cardNumber" : "6796819982034243",
-        "status" : "blocked"
+        "cardNumber" : "4686471658318359",
+        "status" : "active"
       } ]
     } ]
   }, {
@@ -1926,8 +1989,8 @@
       "currency" : "EUR",
       "type" : "classic",
       "cards" : [ {
-        "cardNumber" : "6796819982034243",
-        "status" : "blocked"
+        "cardNumber" : "4686471658318359",
+        "status" : "active"
       } ]
     } ]
   }, {
@@ -2115,7 +2178,7 @@
     "description" : "Split payment of 9003.00 RON",
     "currency" : "RON",
     "amount" : 900.3,
-    "error" : "Account RO30POOB9523423715747796 has insufficient funds for a split payment.",
+    "error" : "Account RO19POOB4981055641668812 has insufficient funds for a split payment.",
     "involvedAccounts" : [ "RO30POOB9523423715747796", "RO90POOB5450777208072365", "RO79POOB3616857825600958", "RO58POOB7344468893732422", "RO65POOB8944016386845896", "RO58POOB2721178218599590", "RO69POOB6209498372540635", "RO76POOB4035116042454483", "RO37POOB7013767509830666", "RO19POOB4981055641668812" ]
   }, {
     "timestamp" : 49,
@@ -2301,6 +2364,9 @@
     "card" : "8207906978464446",
     "cardHolder" : "Sachi_Brahmbhatt@protonmail.in",
     "account" : "RO58POOB7344468893732422"
+  }, {
+    "timestamp" : 173,
+    "description" : "Account couldn't be deleted - there are funds remaining"
   } ],
   "timestamp" : 195
 } ]

@@ -79,18 +79,18 @@
   "timestamp" : 14
 }, {
   "command" : "payOnline",
-  "timestamp" : 23,
   "output" : {
     "timestamp" : 23,
     "description" : "Card not found"
-  }
+  },
+  "timestamp" : 23
 }, {
   "command" : "payOnline",
-  "timestamp" : 24,
   "output" : {
     "timestamp" : 24,
     "description" : "Card not found"
-  }
+  },
+  "timestamp" : 24
 }, {
   "command" : "report",
   "timestamp" : 25,

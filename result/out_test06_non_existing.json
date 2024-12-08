@@ -26,11 +26,11 @@
   "timestamp" : 7
 }, {
   "command" : "payOnline",
-  "timestamp" : 9,
   "output" : {
     "timestamp" : 9,
     "description" : "Card not found"
-  }
+  },
+  "timestamp" : 9
 }, {
   "command" : "printUsers",
   "output" : [ {
@@ -68,11 +68,11 @@
   "timestamp" : 12
 }, {
   "command" : "payOnline",
-  "timestamp" : 14,
   "output" : {
     "timestamp" : 14,
     "description" : "Card not found"
-  }
+  },
+  "timestamp" : 14
 }, {
   "command" : "printUsers",
   "output" : [ {
