@@ -1,0 +1,41 @@
+commit 264e223bf3478920735669dbe93574ccadbb2eae
+Author: Sergiu Ivan <sergiu.ivan@stud.acs.upb.ro>
+Date:   Sun Dec 8 16:19:29 2024 +0200
+
+    implementare integrala + readme
+
+commit ce6464dda9d59ab296e229277dd2caa26b8548d8
+Author: Sergiu Ivan <sergiu.ivan@stud.acs.upb.ro>
+Date:   Wed Dec 4 21:58:21 2024 +0200
+
+    implementare fara testele 18-19-20
+
+commit b7a634fea9c5ef1b77cb78c77859b6d41d8fbf21
+Author: Sergiu Ivan <sergiu.ivan@stud.acs.upb.ro>
+Date:   Sun Dec 1 18:57:25 2024 +0200
+
+    implementare pana la report clasic
+
+commit 51fedbab5da187d2f686c7e30869d55afdcafbe3
+Author: Sergiu Ivan <sergiu.ivan@stud.acs.upb.ro>
+Date:   Sun Dec 1 15:36:22 2024 +0200
+
+    implementare pana la every_payment
+
+commit 3c2b6a028c9fc12fcf91d4d28b836e0cccf9f198
+Author: Sergiu Ivan <sergiu.ivan@stud.acs.upb.ro>
+Date:   Sun Dec 1 00:20:45 2024 +0200
+
+    implementare pana la savings account
+
+commit d5a106b75c25364624a4c9677a70aab49e6b66c2
+Author: Sergiu Ivan <sergiu.ivan@stud.acs.upb.ro>
+Date:   Sun Dec 1 00:17:16 2024 +0200
+
+    implementare pana la savings account
+
+commit 961485a239897dc1732aa98caf28c4bcadb29cdd
+Author: SergiuIvan24 <151393352+SergiuIvan24@users.noreply.github.com>
+Date:   Sun Dec 1 00:14:30 2024 +0200
+
+    Initial commit

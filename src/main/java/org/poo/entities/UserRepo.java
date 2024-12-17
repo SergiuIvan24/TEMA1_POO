@@ -45,18 +45,21 @@ public final class UserRepo {
     }
     /**
      * Returneaza rata de schimb dintre doua valute, cautand si conversii
-     * indirecte
+     * indirecte/inverse
      * @param from valuta de la care se face conversia
      * @param to valuta in care se face conversia
-     * @param visitedCurrencies set cu valutele vizitate
+     * @param visitedCurr set cu valutele vizitate
      */
     private double getExchangeRate(final String from, final String to,
-                                   final Set<String> visitedCurrencies) {
+                                   final Set<String> visitedCurr) {
+        if (from == null || to == null) {
+            throw new IllegalArgumentException("Currency values cannot be null");
+        }
         if (from.equals(to)) {
             return 1.0;
         }
 
-        visitedCurrencies.add(from);
+        visitedCurr.add(from);
 
         for (ExchangeRate rate : exchangeRates) {
             if (rate.getFrom().equals(from) && rate.getTo().equals(to)) {
@@ -68,42 +71,41 @@ public final class UserRepo {
         }
 
         Queue<String> queue = new LinkedList<>();
-        Map<String, Double> rates = new HashMap<>();
+        Map<String, Double> conversionRates = new HashMap<>();
         queue.add(from);
-        rates.put(from, 1.0);
+        conversionRates.put(from, 1.0);
 
         while (!queue.isEmpty()) {
-            String currentCurrency = queue.poll();
-            double currentRate = rates.get(currentCurrency);
+            String currentCurrency = queue.remove();
+            double currentRate = conversionRates.get(currentCurrency);
 
             for (ExchangeRate rate : exchangeRates) {
-                String nextCurrency = null;
-                double nextRate = 0.0;
-
-                if (rate.getFrom().equals(currentCurrency)
-                        && !visitedCurrencies.contains(rate.getTo())) {
-                    nextCurrency = rate.getTo();
-                    nextRate = rate.getRate();
-                } else if (rate.getTo().equals(currentCurrency)
-                        && !visitedCurrencies.contains(rate.getFrom())) {
-                    nextCurrency = rate.getFrom();
-                    nextRate = 1.0 / rate.getRate();
-                }
-
-                if (nextCurrency != null) {
-                    double totalRate = currentRate * nextRate;
-                    if (nextCurrency.equals(to)) {
+                if (rate.getFrom().equals(currentCurrency) && !visitedCurr.contains(rate.getTo())) {
+                    double totalRate = currentRate * rate.getRate();
+                    if (rate.getTo().equals(to)) {
                         return totalRate;
                     }
-                    if (!rates.containsKey(nextCurrency)) {
-                        rates.put(nextCurrency, totalRate);
-                        queue.add(nextCurrency);
+                    if (!conversionRates.containsKey(rate.getTo())) {
+                        conversionRates.put(rate.getTo(), totalRate);
+                        queue.add(rate.getTo());
+                    }
+                } else if (rate.getTo().equals(currentCurrency)
+                        && !visitedCurr.contains(rate.getFrom())) {
+                    double totalRate = currentRate * (1.0 / rate.getRate());
+                    if (rate.getFrom().equals(to)) {
+                        return totalRate;
+                    }
+                    if (!conversionRates.containsKey(rate.getFrom())) {
+                        conversionRates.put(rate.getFrom(), totalRate);
+                        queue.add(rate.getFrom());
                     }
                 }
             }
         }
+
         return -1.0;
     }
+
     /**
      * Returneaza IBAN-ul unui cont dupa alias
      * @param alias alias-ul contului

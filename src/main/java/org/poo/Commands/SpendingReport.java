@@ -53,9 +53,8 @@ public final class SpendingReport implements Command {
             return;
         }
 
-        List<Transaction> allTransactions = account.getTransactions();
         List<Transaction> wantedTransactions = new ArrayList<>();
-        for (Transaction transaction : allTransactions) {
+        for (Transaction transaction : account.getTransactions()) {
             int transactionTimestamp = transaction.getTimestamp();
             if (transactionTimestamp >= startTimestamp && transactionTimestamp <= endTimestamp) {
                 if (transaction.getCommerciant() != null) {
@@ -67,22 +66,33 @@ public final class SpendingReport implements Command {
         wantedTransactions.sort(Comparator.comparing(Transaction::getTimestamp));
 
         Map<String, Double> commerciants = new TreeMap<>();
+        ArrayNode transactionsArray = objectMapper.createArrayNode();
         for (Transaction transaction : wantedTransactions) {
-            double convertedAmount = convertAmount(transaction.getAmount(),
-                    transaction.getCurrency(),
+            if (transaction.getCurrency() == null || account.getCurrency() == null
+                    || transaction.getCurrency().equals(account.getCurrency())) {
+                commerciants.merge(transaction.getCommerciant(), transaction.getAmount(),
+                        Double::sum);
+                transactionsArray.add(createTransactionNode(transaction, account.getCurrency(),
+                        transaction.getAmount()));
+                continue;
+            }
+
+            double exchangeRate = userRepo.getExchangeRate(transaction.getCurrency(),
                     account.getCurrency());
-            commerciants.merge(transaction.getCommerciant(), convertedAmount, Double::sum);
+
+            if (exchangeRate != -1) {
+                double convertedAmount = transaction.getAmount() * exchangeRate;
+                commerciants.merge(transaction.getCommerciant(), convertedAmount, Double::sum);
+                transactionsArray.add(createTransactionNode(transaction, account.getCurrency(),
+                        convertedAmount));
+            }
+
         }
 
         ObjectNode reportNode = objectMapper.createObjectNode();
         reportNode.put("IBAN", account.getIban());
         reportNode.put("balance", account.getBalance());
         reportNode.put("currency", account.getCurrency());
-
-        ArrayNode transactionsArray = objectMapper.createArrayNode();
-        for (Transaction transaction : wantedTransactions) {
-            transactionsArray.add(createTransactionNode(transaction, account.getCurrency()));
-        }
         reportNode.set("transactions", transactionsArray);
 
         ArrayNode commerciantsArray = objectMapper.createArrayNode();
@@ -99,36 +109,15 @@ public final class SpendingReport implements Command {
     }
 
     private ObjectNode createTransactionNode(final Transaction transaction,
-                                             final String accountCurrency) {
+                                             final String accountCurrency, final double amount) {
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode transactionNode = mapper.createObjectNode();
         transactionNode.put("timestamp", transaction.getTimestamp());
         transactionNode.put("description", transaction.getDescription());
-
-        double amount = convertAmount(transaction.getAmount(),
-                transaction.getCurrency(), accountCurrency);
         transactionNode.put("amount", amount);
         transactionNode.put("commerciant", transaction.getCommerciant());
 
         return transactionNode;
-    }
-
-    private double convertAmount(final double amount, final String fromCurrency,
-                                 final String toCurrency) {
-        if (fromCurrency == null || toCurrency == null || fromCurrency.equals(toCurrency)) {
-            return amount;
-        }
-
-        Double rate = userRepo.getExchangeRate(fromCurrency, toCurrency);
-        if (rate != null) {
-            return amount * rate;
-        }
-
-        Double inverseRate = userRepo.getExchangeRate(toCurrency, fromCurrency);
-        if (inverseRate != null) {
-            return amount / inverseRate;
-        }
-        return -1;
     }
 
 }
